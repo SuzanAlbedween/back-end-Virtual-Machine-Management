@@ -17,35 +17,24 @@ class userDTO:
         self.userpassword=str(userpassword)
 #class authentication:
 #****************************
-data=[{"name":"suzi2","password":"12345"},{"name":"bibi","password":"92345"}]
+#data=[{"name":"suzi2","password":"12345"},{"name":"bibi","password":"92345"}]
 class authentication(Resource):
-    def get(self,name=None):
-        if(name==None):
-            return data, 200
-        for res in data:
-            if(res["name"] ==name):
-                return data, 200
-        return "name not found", 404
-
-
-
-
-
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument("name")
         parser.add_argument("password")
         params = parser.parse_args()
         obj=userDTO(None,params["name"],params["password"])
-        print(params["name"],params["password"])
-        print("the obj is",obj.username,"  ",obj.userpassword)
-        res=CheckLogIn(obj.username,obj.userpassword)
-        #rsjson={"result":json.dumps(res)}
-        #resinjson = json.dumps(res)
-        return str(res), 200
-
-
-
+        if((obj.username==None)or(obj.userpassword==None)):
+            print(" missing arguments")
+            return 400
+        else:
+            print(params["name"], params["password"])
+            print("the obj is", obj.username, "  ", obj.userpassword)
+            res = CheckLogIn(obj.username, obj.userpassword)
+            # rsjson={"result":json.dumps(res)}
+            # resinjson = json.dumps(res)
+            return str(res), 200
 
 
 api.add_resource(authentication, "/auth", "/auth/", "/auth/<string:name>")
