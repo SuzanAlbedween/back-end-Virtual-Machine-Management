@@ -7,12 +7,12 @@ import uuid
 def CreatNewUser( UserName, PassWord):
     conn = pyodbc.connect(Driver='{SQL Server}', Server='DESKTOP-5BHLCG8', Database='vmm', Trusted_Connection='yes')
     cursor = conn.cursor()
-    #cursor.execute('SELECT * FROM [user]')
     UniqueiD = uuid.uuid4()
     print(UniqueiD)
     SQLTASK = ("INSERT INTO [users](id,name,password) VALUES (?,?,?)")
     with cursor.execute(SQLTASK,UniqueiD,UserName,PassWord):
         print('Successfully Inserted!')
+        return True
     conn.commit()
     conn.close()
 
@@ -45,10 +45,3 @@ def deleteuser(name ,password):
     conn.commit()
 
 
-
-#2dc09598-64dc-40c7-b50f-2ce4ed73cdc0
-#2DC09598-64DC-40C7-B50F-2CE4ED73CDC0
-
-#CreatNewUser("root", "1234567")
-#GetUserID("root", "1234567")
-#deleteuser("root", "12db4b8b-abc2-4e49-867b-6ef12dc89e98")
