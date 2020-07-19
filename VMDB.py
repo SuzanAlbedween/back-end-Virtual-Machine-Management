@@ -41,7 +41,7 @@ def GetLifetime_Per_vm(iduser,vmname):
     lifetime = res.fetchone()
     print(lifetime[0])
     return lifetime[0]
-def GetAllVmDB(iduser,searchtype):
+def GetAllVmDB(iduser,searchtype="."):
     conn = pyodbc.connect(Driver='{SQL Server}', Server='DESKTOP-5BHLCG8', Database='vmm', Trusted_Connection='yes')
     print("Get All VM DATA from DataBase...  ")
     if(searchtype=="."):
@@ -71,20 +71,6 @@ def GetAllVmDB(iduser,searchtype):
 
 
 
-
-
-
-
-
-
-#Extend_DB("12db4b8b-abc2-4e49-867b-6ef12dc89e98","vm3","27-7-2020")
-#Deletvm("12db4b8b-abc2-4e49-867b-6ef12dc89e98","vm2")
-#resulte=GetLifetime_Per_vm("12db4b8b-abc2-4e49-867b-6ef12dc89e98","vm3")
-#print(resulte)
-#res=GetAllVmDB("16FB346F-3116-4016-8984-E9B0787CEEE0")
-#print("**************after*****************")
-#print(res)
-#InsertVM("12345678900","vm5","192.60.172.94","windos","powerON","4GB","20GB","16-02-2021","16FB346F-3116-4016-8984-E9B0787CEEE0")
 
 
 
