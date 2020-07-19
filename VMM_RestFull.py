@@ -16,7 +16,15 @@ class VMDTO:
         self.name=str(VMName)
         self.os=str(OperatingSystem)
         self.status=str(Status)
-        self.ram=int(Ram)
+        if(Ram!=None):
+            getnumberGB_ram = Ram.split(" ");
+            print(getnumberGB_ram)
+            self.ram = int(getnumberGB_ram[0])
+            print("\n **ram is", self.ram)
+        else:
+            self.ram=0
+
+
         self.storage=int(Storage)
         self.lifetime=int(LifeTime)
         self.username=str(username)
@@ -24,21 +32,19 @@ class VMDTO:
         self.host=str(host)
         self.isopath=str(iso)
 
-#class authentication:
-#****************************
-#data=[{"name":"suzi2","password":"12345"},{"name":"bibi","password":"92345"}]
-class authentication(Resource):
+
+class VMMREST(Resource):
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument("username")
         parser.add_argument("password")
         parser.add_argument("host")
-        parser.add_argument("typesearch")
+        #parser.add_argument("typesearch")
         params = parser.parse_args()
-        obj=VMDTO(params["typesearch"],None,None,0,0,0,None,params["username"],params["password"],params["host"])
-        if(obj.name!=None and obj.username!=None and obj.password!=None and obj.host!=None):
-            print(obj.host,obj.username,obj.password,obj.name)
-            res=GetAllVm(obj.host,obj.username,obj.password,obj.name)
+        obj=VMDTO(None,None,None,None,0,0,None,params["username"],params["password"],params["host"])
+        if( obj.username!=None and obj.password!=None and obj.host!=None):
+            print(obj.host,obj.username,obj.password)
+            res=GetAllVm(obj.host,obj.username,obj.password,".")
             return str(res), 200
         else:
             print("missing arguments")
@@ -63,7 +69,6 @@ class authentication(Resource):
             print("missing arguments")
             return str(False),400
     def put(self):
-        #username, password,vmname,newdate
         parser = reqparse.RequestParser()
         parser.add_argument("VMname")
         parser.add_argument("username")
@@ -104,9 +109,9 @@ class authentication(Resource):
             print(obj.name, obj.os,obj.status,obj.ram,obj.storage,obj.lifetime,obj.isopath,obj.username,obj.password,obj.host)
 
             res = Create(obj.name,obj.os,obj.ram,obj.storage,obj.lifetime,obj.password,obj.username,obj.host,obj.isopath,obj.status)
-            return str(res), 200
+            return str(res), 201
 
 
-api.add_resource(authentication, "/VMM", "/VMM/", "/VMM/<string:name>")
+api.add_resource( VMMREST, "/VMM", "/VMM/", "/VMM/<string:name>")
 if __name__ == '__main__':
     app.run(debug=True)
