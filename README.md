@@ -8,8 +8,13 @@ the project is a system that will enable the IT department to manage automatic m
 
  Introduction
 
-Here at Cyber ​​Engineering Group we develop tools to help our clients protect their data.
+Here at Cyber Engineering Group we develop tools to help our clients protect their data.
 One feature we need is the ability to manage virtual machines.
 To make things simple let's define that the system can create max 3 virtual machines in single request and we create VM from predefined template.
-System Requirements.
+System Requirements,
 We shell describe our requirements in an incremental fashion using the notion of steps.
+________________________________________________________________________________________________
+
+Technologies utilized included 
+
+ Python, Vsphere 6.5, ESXI 6.5, and SQL Express. 
