@@ -8,13 +8,13 @@ from pyVim.connect import SmartConnect, Disconnect
 from pyVmomi import vim
 from pyVim.connect import SmartConnect
 from vmwc import VMWareClient
-
+import json
 from DBuser import *
 from ESXI import *
 from VMDB import *
 
 
-class Management:
+class VM:
     def __init__(self,UniqueiD, VMName, Ip, OperatingSystem, Status, Ram, Storage, LifeTime,iduser):
         self.UniqueiD = UniqueiD
         self.VMName = VMName
@@ -28,6 +28,7 @@ class Management:
 
 
 def Create(VMName,OS,ram,storage,lifetime,pwd,username,host,pathiso,Status):
+    print("this is http in angular is get \n",VMName,OS,ram,storage,lifetime,pwd,username,host,pathiso,Status)
     #**************************setting***************************
     s = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
     s.verify_mode = ssl.CERT_NONE
@@ -95,30 +96,30 @@ def CheckVMS(vms_db,vms_esxi):
 def ConverttoManagementObj(vmsdb):
     mangementobjs=[]
     for i in vmsdb:
-        mangementobjs.append(Management(i[0],i[1],i[2],i[3],i[4],i[5],i[6],i[7],i[8]))
+        mangementobjs.append(VM(i[0],i[1],i[2],i[3],i[4],i[5],i[6],i[7],i[8]))
     print(mangementobjs[0].VMName)
     return mangementobjs
 
 
 def GetAllVm(host,username, password,typesearch):
+    res=[]
+    data={}
+    cutvm=[]
     iduser=GetUserID(username,password)
-    vms_exist=[]
-    info_vms=[]
+    common_vms=[] #Virtual machines that are at the DB and also in esxi
     vms_db = GetAllVmDB(iduser, typesearch)
     vms_ESXI = ViewAllVMByName(host, username, password)
     for i in vms_db:
         for j in vms_ESXI:
             if (i[1] == j):
-                vms_exist.append(i[1])
-                vms_ESXI.remove(j)
-                vms_db.remove(i)
-    info_vms.append(vms_exist)
-    # vms_missing_from_db
-    info_vms.append(vms_ESXI)
-    # vms_missing_from_esxi
-    info_vms.append(vms_db)
-    print("print all info from managment ",info_vms)
-    return info_vms
+                cutvm = [x for x in i]
+                common_vms.append(VM(cutvm[0],cutvm[1],cutvm[2],cutvm[3],cutvm[4],cutvm[5],cutvm[6],cutvm[7],cutvm[8]));
+    print("common vm's",common_vms)
+    for c in common_vms:
+        print("this is",c)
+        res.append(c.__dict__)
+    print(res)
+    return res
 
 
 
@@ -127,12 +128,3 @@ def GetAllVm(host,username, password,typesearch):
 
 
 
-
-#res=ExtendVM("root","1234567","vm4","30-8-2020")
-#print(res)
-   # CreateVM(host, username, password, "vm5", "ubuntuGuest", 1024, 20, 'C:\\Users\\suzi2\\Desktop\\ubuntu.iso',  "PowerOn")
-#tt=Create("vm88", "ubuntuGuest","PowerOn", 2, 30, 60, "1234567", "root","192.168.75.128", 'C:\\Users\\suzi2\\Desktop\\ubuntu.iso', "PowerOn")
-#print(tt)
-#res=DeleteVM("vm88","192.168.75.128","root","1234567")
-#print("******",res)
-#GetAllVm("192.168.75.128","root", "1234567",".")
