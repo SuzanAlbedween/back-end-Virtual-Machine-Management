@@ -13,6 +13,10 @@ One feature we need is the ability to manage virtual machines.
 To make things simple let's define that the system can create max 3 virtual machines in single request and we create VM from predefined template.
 System Requirements,
 We shell describe our requirements in an incremental fashion using the notion of steps.
+
+The  system  allows users to manage multiple virtual machines for the user, and also allows IT
+departments to manage automatic creation, deletion and expansion of machines according to the engineer's
+request and resource availability. 
 ________________________________________________________________________________________________
 
 Technologies utilized included 
