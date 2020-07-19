@@ -7,12 +7,9 @@ from pyVmomi import vim
 import ssl
 from vmwc import VMWareClient
 
-#s=ssl.SSLContext(ssl.PROTOCOL_TLSv1)
-#s.verify_mode=ssl.CERT_NONE
-#si= SmartConnect(host="192.168.75.128", user="root", pwd="1234567",sslContext=s)
-#my_cluster=si.content
+
 MBFACTOR = float(1 << 20) #MB
-# delete_vm_by_name:
+
 def CreateVM(host,username,password,name,OS,Ram , Storage,PathISO ,Status ):
     with VMWareClient(host, username, password) as client:
         vm = client.new_virtual_machine(name=name, cpus=2, ram_mb=Ram, disk_size_gb=Storage,operating_system_type=OS)
@@ -49,6 +46,7 @@ def ViewAllVMByName(host, username, password):
 
     if status != 1 :
         print("No virtual machines were found with this name!!!")
+    print("vm's in esxi now \n",all_vm)
     return all_vm
 def GetManagedObject(content, vimtype):
         # Return an object by type
@@ -82,15 +80,3 @@ def CheckResourc(host, rmemoryGB, rspaceGB, datastore):
             print(error)
 
         return True
-def main():
-    host = "192.168.75.128"
-    username = "root"
-    password = "1234567"
-    #view_vm_by_name(host, username, password)
-    #CreateVM(host, username, password, "vm5", "ubuntuGuest", 1024, 20, 'C:\\Users\\suzi2\\Desktop\\ubuntu.iso', "PowerOn")
-   # delete_vm_by_name(host, username, password, "Vvm3")
-    #si = SmartConnect(host, user=username,  pwd=password, port=int(443))
-
-
-if __name__ == '__main__':
-    main()
